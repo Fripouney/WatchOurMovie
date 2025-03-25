@@ -1,0 +1,9 @@
+from sqlalchemy import *
+from sqlalchemy.orm import relationship
+from backend.db import Base
+
+class UserMovieModel(Base):
+    id = Column(INTEGER, primary_key=True, index=True)
+    user_id = Column(INTEGER, ForeignKey("user.id"))
+    movie_id = Column(INTEGER)
+    user = relationship("user")

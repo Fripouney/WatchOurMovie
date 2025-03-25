@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS user_favorite_genre (
 
 CREATE TABLE IF NOT EXISTS friends (
     id SERIAL PRIMARY KEY,
+    user_id SERIAL,
     friend_id SERIAL,
+    accepted BOOLEAN,
     FOREIGN KEY friend_id REFERENCES user(id)
 );
 
