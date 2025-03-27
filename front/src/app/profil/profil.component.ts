@@ -7,10 +7,10 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-profil',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  templateUrl: './profil.component.html',
+  styleUrls: ['./profil.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfilComponent implements OnInit {
   username: string = '';
   email: string = '';
   password: string = '';
