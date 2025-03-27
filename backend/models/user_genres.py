@@ -1,7 +1,7 @@
 from sqlalchemy import Column, INTEGER, VARCHAR, ForeignKey
 from sqlalchemy.orm import relationship
 from backend.db import Base
-from backend.models.user_model import UserModel
+from backend.models.user import UserModel
 
 class UserFavoriteGenreModel(Base):
     __tablename__ = "user_favorite_genre"

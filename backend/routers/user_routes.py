@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from backend.db import get_db
-from backend.models.user_model import UserModel
+from backend.models.user import UserModel
 from backend.schemas.user_schema import UserCreate, UserGet
-from backend.models.user_favorite_genre_model import UserFavoriteGenreModel
+from backend.models.user_genres import UserFavoriteGenreModel
 from backend.schemas.user_schema import UserFavoriteGenreCreate
 
 userRoutes = APIRouter()
