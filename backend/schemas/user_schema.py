@@ -1,10 +1,15 @@
 from pydantic import BaseModel
-
 class UserCreate(BaseModel):
-    name: str
+    username: str
     password: str
 
 class UserGet(BaseModel):
     id: int
-    name: str
+    username: str
     password: str
+
+    class Config:
+        orm_mode = True
+
+class UserFavoriteGenreCreate(BaseModel):
+    genre: str
