@@ -1,0 +1,23 @@
+<div class="pt-24 pb-12 min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#312e81] text-white">
+    <h2 class="text-3xl font-bold text-indigo-300 text-center mb-8">Détails</h2>
+    <div *ngIf="movie">
+        <div class="flex items-start gap-5 max-w-3xl m-auto p-5">
+            <div class="flex-1 text-center">
+                <h1 class="text-3xl">{{ movie.title }}</h1>
+                <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" alt="Affiche du film" />
+            </div>
+            <div style="flex: 2">
+                <div class="bg-black bg-opacity-40 p-4 rounded-lg">
+                    <p><strong>Date de sortie :</strong> {{ movie.release_date }}</p>
+                    <p><strong>Note :</strong> {{ movie.vote_average }}/10</p>
+                    <p><strong>Synopsis :</strong> {{ movie.overview }}</p>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-20">
+                    <span class="bg-white bg-opacity-20 pt-1 pb-1 pl-3 pr-3 rounded-md" *ngFor="let genre of movie.genres">{{ genre.name }}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <p *ngIf="error">{{ error }}</p>
+</div>
