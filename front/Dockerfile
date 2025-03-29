@@ -1,18 +1,17 @@
-# Build l'app
-FROM node:18 AS builder
+FROM node:18
 
 WORKDIR /app
 
+# Installer les dépendances
+COPY package.json package-lock.json ./
+RUN npm install -g @angular/cli
+RUN npm install
+
+# Copier le reste du code source de l'application
 COPY . .
 
-RUN npm install && npm run build
+# Exposer le port 4200 pour le serveur Angular
+EXPOSE 4200
 
-# Servir l'app avec Nginx
-FROM nginx:alpine
-
-# Copie les fichiers compilés dans le dossier de Nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Lancer l'application
+CMD ["ng", "serve", "--host", "0.0.0.0"]

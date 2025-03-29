@@ -1,6 +1,6 @@
 from sqlalchemy import Column, INTEGER, BOOLEAN, ForeignKey
 from sqlalchemy.orm import relationship
-from backend.db import Base
+from db import Base
 
 class FriendshipModel(Base):
     __tablename__ = "friends"

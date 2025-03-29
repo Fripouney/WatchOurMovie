@@ -1,8 +1,8 @@
 from sqlalchemy import Column, INTEGER, ForeignKey
 from sqlalchemy.orm import relationship
-from backend.db import Base
+from db import Base
 
-class UserMovieModel(Base):
+class UserMoviesModel(Base):
     __tablename__ = "user_movie"
 
     id = Column(INTEGER, primary_key=True, index=True)

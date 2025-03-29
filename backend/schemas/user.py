@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+
 class UserCreate(BaseModel):
     username: str
     password: str
@@ -11,5 +12,5 @@ class UserGet(BaseModel):
     class Config:
         orm_mode = True
 
-class UserFavoriteGenreCreate(BaseModel):
+class UserGenresCreate(BaseModel):
     genre: str

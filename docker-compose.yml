@@ -2,8 +2,8 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pw
       POSTGRES_DB: watchourmovie
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -19,13 +19,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/watchourmovie
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/watchourmovie
 
   frontend:
     build:
       context: ./front
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       - backend
 
