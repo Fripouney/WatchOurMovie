@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Header
+from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from db import get_db
 from schemas.auth import UserLogin, UserRegister, TokenResponse
@@ -15,7 +15,7 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Username already taken")
 
     hashed_pw = bcrypt.hashpw(user.password.encode(), bcrypt.gensalt())
-    new_user = UserModel(username=user.username, password=hashed_pw.decode())
+    new_user = UserModel(admin=False, username=user.username, password=hashed_pw.decode())
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

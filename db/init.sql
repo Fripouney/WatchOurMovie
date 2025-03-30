@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
+    admin BOOLEAN DEFAULT FALSE,
     username VARCHAR(40) NOT NULL,
     password VARCHAR(100) NOT NULL
 );

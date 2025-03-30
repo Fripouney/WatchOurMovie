@@ -1,5 +1,4 @@
 from sqlalchemy import Column, INTEGER, ForeignKey
-from sqlalchemy.orm import relationship
 from db import Base
 
 class UserMoviesModel(Base):
@@ -8,5 +7,3 @@ class UserMoviesModel(Base):
     id = Column(INTEGER, primary_key=True, index=True)
     user_id = Column(INTEGER, ForeignKey("users.id"))
     movie_id = Column(INTEGER)
-
-    user = relationship("UserModel", backref="movies")

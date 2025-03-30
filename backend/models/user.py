@@ -1,13 +1,10 @@
-from sqlalchemy import Column, INTEGER, VARCHAR
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, INTEGER, VARCHAR, BOOLEAN
 from db import Base
 
 class UserModel(Base):
     __tablename__ = "users"
 
     id = Column(INTEGER, primary_key=True, index=True)
+    admin = Column(BOOLEAN, default=False)
     username = Column(VARCHAR(40), nullable=False)
     password = Column(VARCHAR(100), nullable=False)
-
-    favorite_genres = relationship("UserGenresModel", backref="user", cascade="all, delete-orphan")
-    viewed_movies = relationship("UserMoviesModel", backref="user", cascade="all, delete-orphan")

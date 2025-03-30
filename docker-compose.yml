@@ -19,7 +19,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/watchourmovie
+      DATABASE_URL: postgresql://admin:pw@db:5432/watchourmovie
 
   frontend:
     build:
