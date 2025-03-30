@@ -14,6 +14,14 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@userRoutes.get("/user/by-username/{username}", response_model=UserGet)
+def get_user_by_username(username: str, db: Session = Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+
 # Requête POST : crée un user
 @userRoutes.post("/user")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
