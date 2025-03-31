@@ -1,0 +1,27 @@
+<nav class="w-full bg-[#0f172a] text-white shadow-md px-6 py-4 flex justify-between items-center">
+  <!-- Gauche -->
+  <div class="flex space-x-6 items-center">
+    <a routerLink="/" class="text-2xl font-bold text-indigo-400 hover:text-indigo-300 transition">WoM</a>
+    <a routerLink="/friends" class="hover:text-indigo-300 transition">Amis</a>
+    <a routerLink="/films" class="hover:text-indigo-300 transition">Parcourir</a>
+    <a routerLink="/watch" class="hover:text-indigo-300 transition">Matchmaking</a>
+  </div>
+
+  <!-- Droite -->
+  <div class="flex space-x-4 items-center">
+    <a *ngIf="auth.isAuthenticated()" routerLink="/profil"
+      class="border border-indigo-500 text-indigo-300 px-4 py-2 rounded-lg transition hover:bg-indigo-600 hover:text-white font-medium">
+      Profil
+    </a>
+
+    <button *ngIf="auth.isAuthenticated()" (click)="logout()"
+      class="border border-red-500 text-red-400 px-4 py-2 rounded-lg transition hover:bg-red-600 hover:text-white font-medium">
+      Déconnexion
+    </button>
+
+    <button *ngIf="!auth.isAuthenticated()" routerLink="/login"
+      class="border border-blue-500 text-blue-400 px-4 py-2 rounded-lg transition hover:bg-blue-600 hover:text-white font-medium">
+      Connexion
+    </button>
+  </div>
+</nav>

@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+psycopg2-binary
+sqlalchemy
+werkzeug
+pyjwt
+bcrypt
