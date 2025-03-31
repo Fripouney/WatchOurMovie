@@ -1,5 +1,6 @@
 import bcrypt
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from db import get_db
 from models.user import UserModel
@@ -10,6 +11,9 @@ from utils.deps import get_current_user
 
 userRoutes = APIRouter()
 
+class MovieWatchedRequest(BaseModel):
+    movie_id: int
+
 # GET : récupère un user avec son id
 @userRoutes.get("/user/{id}", response_model=UserGet)
 def get_user_by_id(id: int, db: Session = Depends(get_db)):
@@ -19,27 +23,25 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
     return user
 
 # Vérifie si un user a vu un film
-@userRoutes.get("/user/{user_id}/watched/{movie_id}")
-def check_if_user_viewed_movie(user_id: int, movie_id: int, db: Session = Depends(get_db)):
-    user_movie = db.query(UserMoviesModel).filter(UserMoviesModel.user_id == user_id and UserMoviesModel.movie_id == movie_id).first()
+@userRoutes.get("/user/watched/{movie_id}")
+def check_if_user_viewed_movie(movie_id: int, user: UserModel = Depends(get_current_user), db: Session = Depends(get_db)):
+    user_movie = db.query(UserMoviesModel).filter(UserMoviesModel.user_id == user.id and UserMoviesModel.movie_id == movie_id).first()
     return {"viewed": user_movie is not None}
 
 
 # Ajoute un film vu par un utilisateur
 @userRoutes.post("/user/watched")
-def add_watched_movie(movie_id: int, db: Session = Depends(get_db)):
-    user_id = get_current_user().id
-    user_movie: UserMovieCreate
-    new_user_movie = UserMoviesModel(user_movie.model_dump())
-    db.add(new_user_movie)
+def add_watched_movie(body: MovieWatchedRequest, user: UserModel = Depends(get_current_user), db: Session = Depends(get_db)):
+    user_movie =  UserMoviesModel(user_id = user.id, movie_id = body.movie_id)
+    db.add(user_movie)
     db.commit()
-    db.refresh()
-    return {"message": "Movie marked as seen by user", "user_movie": new_user_movie}
+    db.refresh(user_movie)
+    return {"message": "Movie marked as seen by user", "user_movie": user_movie}
 
 # Supprime un film vu par un utilisateur
-@userRoutes.delete("/user/{user_id}/watched/{movie_id}")
-def deleteWatchedMovie(user_id: int, movie_id: int, db: Session = Depends(get_db)):
-    user_movie = db.query(UserMoviesModel).filter(UserMoviesModel.user_id == user_id and UserMoviesModel.movie_id == movie_id).first()
+@userRoutes.delete("/user/watched/{movie_id}")
+def deleteWatchedMovie(movie_id: int, user: UserModel = Depends(get_current_user), db: Session = Depends(get_db)):
+    user_movie = db.query(UserMoviesModel).filter(UserMoviesModel.user_id == user.id and UserMoviesModel.movie_id == movie_id).first()
     if not user_movie:
         raise HTTPException(status_code=404, detail="This movie is not marked as viewed by the user")
     db.delete(user_movie)

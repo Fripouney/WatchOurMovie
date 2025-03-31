@@ -14,6 +14,7 @@ export class MovieDetailsComponent implements OnInit {
   movie: any;
   error = '';
   viewed = false;
+  token = localStorage.getItem("token");
 
   constructor(private route: ActivatedRoute) {}
 
@@ -31,13 +32,13 @@ export class MovieDetailsComponent implements OnInit {
     }
   }
 
-  async toggleViewedMovie(userId: string) {
-    if (!this.viewed) {
+  async toggleViewedMovie() {
+    if (this.viewed) {
       try {
-        await axios.post(`http://localhost:8000/user/${userId}/watched`, {
-          user_id: userId,
-          movie_id: this.movie.id
-        });
+        const response = await axios.post("http://localhost:8000/user/watched", 
+          { movie_id: this.movie.id },  // Objet JSON correct
+          { headers: { "Content-Type": "application/json", Authorization: `Bearer ${this.token}` } }
+        );
 
       } catch (error) {
         this.error = "Le film n'a pas pu être marqué comme vu";
@@ -46,7 +47,11 @@ export class MovieDetailsComponent implements OnInit {
     } else {
 
       try {
-        await axios.delete(`http://localhost:8080/user/${userId}/watched/${movieId}`);
+        await axios.delete(`http://localhost:8000/user/watched/${this.movie.id}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`
+          }
+        });
 
       } catch (error) {
         this.error = "Le film n'a pas pu être marqué comme non vu";
@@ -54,19 +59,27 @@ export class MovieDetailsComponent implements OnInit {
     }
   }
 
-  async checkIfMovieIsViewed(userId: string) {
+  async checkIfMovieIsViewed() {
     try {
-      const response = await axios.get(`http://localhost:8000/user/${userId}/watched/${this.movie.id}`);
+      const response = await axios.get(`http://localhost:8000/user/watched/${this.movie.id}`, {
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        }
+      });
       this.viewed = response.data.viewed;
     } catch (error) {
-      this.error = "Erreur lors de la vérification du visionnage du film"
+      if(axios.isAxiosError(error)) {
+        error.response ? this.error = error.response.data : this.error = "Aucune réponse du serveur";
+      }
     }
   }
 
   ngOnInit() {
     const movieId = this.route.snapshot.paramMap.get("id");
     if (movieId) {
-      this.getMovieDetails(movieId);
+      this.getMovieDetails(movieId).then(() => {
+        this.checkIfMovieIsViewed();
+      });
     }
   }
 }
