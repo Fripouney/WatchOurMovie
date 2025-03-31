@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.auth import authRoutes
 from routes.user import userRoutes
 from routes.genres import genresRoutes
+from routes.friends import friendsRoutes
 
 app = FastAPI()
 
@@ -36,6 +37,7 @@ def create_default_users():
 app.include_router(authRoutes)
 app.include_router(userRoutes)
 app.include_router(genresRoutes)
+app.include_router(friendsRoutes)
 
 # Autorise toutes les origines
 app.add_middleware(

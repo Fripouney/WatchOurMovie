@@ -16,20 +16,32 @@ export class FriendsComponent implements OnInit {
   token: string | null = null;
 
   ngOnInit(): void {
-    const storedToken = localStorage.getItem('access_token');
-    const storedUserId = localStorage.getItem('user_id');
-
-    if (!storedToken || !storedUserId) {
+    const storedToken = localStorage.getItem('token');
+  
+    if (!storedToken) {
       alert("Utilisateur non authentifié.");
       return;
     }
-
+  
     this.token = storedToken;
-    this.userId = Number(storedUserId);
-
-    this.fetchFriends();
-    this.fetchPendingRequests();
+  
+    // Récupérer l'ID via /users/me
+    fetch('http://localhost:8000/me/', {
+      headers: {
+        'Authorization': `Bearer ${this.token}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.userId = data.id;
+        this.fetchFriends();
+        this.fetchPendingRequests();
+      })
+      .catch(err => {
+        console.error('Erreur utilisateur /me:', err);
+      });
   }
+  
 
   async fetchFriends(): Promise<void> {
     try {
@@ -60,7 +72,6 @@ export class FriendsComponent implements OnInit {
 
     const friendId = await this.getUserIdByUsername(this.newFriendUsername);
     if (!friendId) {
-      alert("Utilisateur introuvable");
       return;
     }
 
@@ -73,7 +84,6 @@ export class FriendsComponent implements OnInit {
       });
 
       const data = await res.json();
-      alert(data.message);
       this.newFriendUsername = '';
       this.fetchPendingRequests();
     } catch (err) {
@@ -89,7 +99,6 @@ export class FriendsComponent implements OnInit {
       });
 
       const data = await res.json();
-      alert(data.message);
       this.fetchFriends();
       this.fetchPendingRequests();
     } catch (err) {
@@ -103,15 +112,13 @@ export class FriendsComponent implements OnInit {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${this.token}` }
       });
-  
+
       const data = await res.json();
-      alert(data.message);
       this.fetchPendingRequests();
     } catch (err) {
       console.error("Erreur declineRequest:", err);
     }
   }
-  
 
   async acceptRequest(friendId: number): Promise<void> {
     try {
@@ -121,7 +128,6 @@ export class FriendsComponent implements OnInit {
       });
 
       const data = await res.json();
-      alert(data.message);
       this.fetchFriends();
       this.fetchPendingRequests();
     } catch (err) {
@@ -134,7 +140,9 @@ export class FriendsComponent implements OnInit {
       const res = await fetch(`http://localhost:8000/user/by-username/${username}`, {
         headers: { 'Authorization': `Bearer ${this.token}` }
       });
-      if (!res.ok) return null;
+      if (!res.ok) {
+        return null;
+      }
 
       const data = await res.json();
       return data.id;
