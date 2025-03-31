@@ -1,14 +1,20 @@
 <div class="pt-24 pb-12 min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#312e81] text-white">
     <h2 class="text-3xl font-bold text-indigo-300 text-center mb-8">Films</h2>
-    <div class="flex justify-center items-center p-4">
-        <table class="overflow-hidden bg-black bg-opacity-40 w-4/5 rounded-xl">
-            <tr *ngFor="let row of getMoviesInRows()">
-                <td class="cursor-pointer" *ngFor="let movie of row" (click)="goToMovieDetails(movie.id)">
-                    <img [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" alt="Affiche" />
-                    <div>{{ movie.title }}</div>
-                    <div>Note : {{ movie.vote_average }}/10</div>
-                </td>
-            </tr>
-        </table>
+  
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-6 max-w-7xl mx-auto">
+      <div
+        *ngFor="let movie of movies"
+        class="bg-[#1e293b] p-3 rounded-xl shadow-md cursor-pointer hover:scale-105 transition-transform"
+        (click)="goToMovieDetails(movie.id)"
+      >
+        <img
+          [src]="'https://image.tmdb.org/t/p/w300' + movie.poster_path"
+          alt="Affiche du film"
+          class="rounded-lg w-full mb-2"
+        />
+        <h3 class="text-lg font-semibold text-indigo-300 text-center">{{ movie.title }}</h3>
+        <p class="text-sm text-gray-300 text-center">Note : {{ movie.vote_average }}/10</p>
+      </div>
     </div>
-</div>
+  </div>
+  
