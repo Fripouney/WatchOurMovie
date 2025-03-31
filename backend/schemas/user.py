@@ -15,3 +15,10 @@ class UserGet(BaseModel):
 
 class UserGenresCreate(BaseModel):
     genre: str
+
+class UserUpdate(BaseModel):
+    username: str
+
+class PasswordChange(BaseModel):
+    old_password: str
+    new_password: str
