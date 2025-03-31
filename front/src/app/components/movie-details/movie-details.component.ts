@@ -15,6 +15,7 @@ export class MovieDetailsComponent implements OnInit {
   error = '';
   viewed = false;
   token = localStorage.getItem("token");
+  tmdbToken = 'TOKEN';
 
   constructor(private route: ActivatedRoute) {}
 
@@ -23,7 +24,7 @@ export class MovieDetailsComponent implements OnInit {
       const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?language=fr`, {
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer [token]"
+          Authorization: `Bearer ${this.tmdbToken}`
         }
       });
       this.movie = response.data;
@@ -36,7 +37,7 @@ export class MovieDetailsComponent implements OnInit {
     if (this.viewed) {
       try {
         const response = await axios.post("http://localhost:8000/user/watched", 
-          { movie_id: this.movie.id },  // Objet JSON correct
+          { movie_id: this.movie.id },
           { headers: { "Content-Type": "application/json", Authorization: `Bearer ${this.token}` } }
         );
 

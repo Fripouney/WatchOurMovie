@@ -8,6 +8,7 @@ from routes.auth import authRoutes
 from routes.user import userRoutes
 from routes.genres import genresRoutes
 from routes.friends import friendsRoutes
+from routes.watch import watchRoutes
 
 app = FastAPI()
 
@@ -38,6 +39,7 @@ app.include_router(authRoutes)
 app.include_router(userRoutes)
 app.include_router(genresRoutes)
 app.include_router(friendsRoutes)
+app.include_router(watchRoutes)
 
 # Autorise toutes les origines
 app.add_middleware(
@@ -53,6 +55,3 @@ if __name__ == "__main__":
 
 
 time.sleep(3)
-
-# # création des tables
-# Base.metadata.create_all(bind=engine)

@@ -22,7 +22,7 @@ export class RegisterComponent {
   async register() {
     if (this.password !== this.confirmPassword) {
       this.error = 'Les mots de passe ne correspondent pas.';
-      return;
+      return; 
     }
 
     try {

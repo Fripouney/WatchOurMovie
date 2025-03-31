@@ -28,5 +28,9 @@ export const routes: Routes = [
     {
       path: 'friends',
       loadComponent: () => import('./components/friends/friends.component').then(m => m.FriendsComponent)
+    },
+    {
+      path: 'watch',
+      loadComponent: () => import('./components/watch/watch.component').then(m => m.WatchComponent)
     }
 ];

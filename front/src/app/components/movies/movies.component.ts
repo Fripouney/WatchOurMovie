@@ -13,6 +13,8 @@ export class MoviesComponent implements OnInit {
   link = "https://api.themoviedb.org/3/movie/popular?language=fr&page=1";
   error = '';
   movies: any[] = [];
+  tmdbToken = 'TOKEN';
+
   constructor(private router: Router) {}
 
   // Récupère la liste des films populaires du moment
@@ -23,7 +25,7 @@ export class MoviesComponent implements OnInit {
         method: 'GET',
         headers: {
           accept: 'application/json',
-          Authorization: 'Bearer [token]'
+          Authorization: `Bearer ${this.tmdbToken}`
         }
       });
       this.movies = response.data.results; 
