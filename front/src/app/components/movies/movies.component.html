@@ -1,9 +1,19 @@
 <div class="pt-24 pb-12 min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#312e81] text-white">
     <h2 class="text-3xl font-bold text-indigo-300 text-center mb-8">Films</h2>
+    <div class="mb-5">
+        <p>Filtrer par genres :</p>
+        <div class="flex flex-wrap gap-3">
+            <button class="pt-2 pb-2 pl-3 pr-3 rounded-2xl border-2 border-solid border-gray-500 bg-white text-black cursor-pointer hover:bg-gray-300" *ngFor="let genre of allGenres" 
+                (click)="toggleGenre(genre.id)" 
+                [class.selected]="selectedGenres.includes(genre.id)">
+                {{ genre.name }}
+            </button>
+        </div>
+    </div>
   
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-6 max-w-7xl mx-auto">
       <div
-        *ngFor="let movie of movies"
+        *ngFor="let movie of filteredMovies"
         class="bg-[#1e293b] p-3 rounded-xl shadow-md cursor-pointer hover:scale-105 transition-transform"
         (click)="goToMovieDetails(movie.id)"
       >

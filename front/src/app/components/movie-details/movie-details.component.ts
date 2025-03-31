@@ -15,7 +15,7 @@ export class MovieDetailsComponent implements OnInit {
   error = '';
   viewed = false;
   token = localStorage.getItem("token");
-  tmdbToken = 'TOKEN';
+  tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YzYyOGQ3MmNiODAwMzNhOTAxNzgwNjdiMGU0MTk2OSIsIm5iZiI6MTczNzEwNTE1Ni40MzkwMDAxLCJzdWIiOiI2NzhhMWYwNDM4OTIwMzkzYWQxZDZmNWIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.tCeVDHw3sWQc8LkD1Yh308oexhQOXhtkNNd9i73e-y8';
 
   constructor(private route: ActivatedRoute) {}
 
