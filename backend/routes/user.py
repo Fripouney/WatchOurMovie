@@ -3,7 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from db import get_db
 from models.user import UserModel
-from schemas.user import PasswordChange, UserCreate, UserGet, UserUpdate
+from models.user_movies import UserMoviesModel
+from utils.deps import get_current_user
+from schemas.user import PasswordChange, UserCreate, UserGet, UserMovieCreate, UserUpdate
 from utils.deps import get_current_user
 
 userRoutes = APIRouter()
@@ -16,6 +18,35 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+# Vérifie si un user a vu un film
+@userRoutes.get("/user/{user_id}/watched/{movie_id}")
+def check_if_user_viewed_movie(user_id: int, movie_id: int, db: Session = Depends(get_db)):
+    user_movie = db.query(UserMoviesModel).filter(UserMoviesModel.user_id == user_id and UserMoviesModel.movie_id == movie_id).first()
+    return {"viewed": user_movie is not None}
+
+
+# Ajoute un film vu par un utilisateur
+@userRoutes.post("/user/watched")
+def add_watched_movie(movie_id: int, db: Session = Depends(get_db)):
+    user_id = get_current_user().id
+    user_movie: UserMovieCreate
+    new_user_movie = UserMoviesModel(user_movie.model_dump())
+    db.add(new_user_movie)
+    db.commit()
+    db.refresh()
+    return {"message": "Movie marked as seen by user", "user_movie": new_user_movie}
+
+# Supprime un film vu par un utilisateur
+@userRoutes.delete("/user/{user_id}/watched/{movie_id}")
+def deleteWatchedMovie(user_id: int, movie_id: int, db: Session = Depends(get_db)):
+    user_movie = db.query(UserMoviesModel).filter(UserMoviesModel.user_id == user_id and UserMoviesModel.movie_id == movie_id).first()
+    if not user_movie:
+        raise HTTPException(status_code=404, detail="This movie is not marked as viewed by the user")
+    db.delete(user_movie)
+    db.commit()
+    return {"message": "The movie has been unmarked as viewed"}
+
+# Retourne la liste des users par username
 # GET : récupère un user avec son nom
 @userRoutes.get("/user/by-username/{username}", response_model=UserGet)
 def get_user_by_username(username: str, db: Session = Depends(get_db)):

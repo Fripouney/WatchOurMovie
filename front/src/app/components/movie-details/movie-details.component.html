@@ -15,6 +15,13 @@
                 <div class="flex flex-wrap gap-2 mt-20">
                     <span class="bg-white bg-opacity-20 pt-1 pb-1 pl-3 pr-3 rounded-md" *ngFor="let genre of movie.genres">{{ genre.name }}</span>
                 </div>
+                <div class="bg-white bg-opacity-10 mt-3 p-3 rounded-lg">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="viewed" (change)="toggleViewedMovie()" />
+                        J'ai vu ce film
+                      </label>
+
+                </div>
             </div>
 
         </div>

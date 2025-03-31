@@ -16,6 +16,11 @@ class UserGet(BaseModel):
 class UserGenresCreate(BaseModel):
     genre: str
 
+
+class UserMovieCreate(BaseModel):
+    user_id: int
+    movie_id: int
+
 class UserUpdate(BaseModel):
     username: str
 
