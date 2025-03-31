@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import axios from 'axios';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-movie-details',
@@ -15,7 +16,7 @@ export class MovieDetailsComponent implements OnInit {
   error = '';
   viewed = false;
   token = localStorage.getItem("token");
-  tmdbToken = 'TOKEN';
+  tmdbToken = environment.tmdbToken;
 
   constructor(private route: ActivatedRoute) {}
 

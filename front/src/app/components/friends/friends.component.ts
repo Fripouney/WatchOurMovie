@@ -14,6 +14,7 @@ export class FriendsComponent implements OnInit {
   pendingRequests: { id: number; username: string }[] = [];
   userId: number = 0;
   token: string | null = null;
+  error = '';
 
   ngOnInit(): void {
     const storedToken = localStorage.getItem('token');

@@ -24,6 +24,8 @@ services:
   frontend:
     build:
       context: ./front
+      args:
+        TMDB_TOKEN: ${TMDB_TOKEN}
     ports:
       - "4200:4200"
     depends_on:

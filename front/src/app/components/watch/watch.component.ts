@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import axios from 'axios';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-watch',
@@ -16,8 +17,7 @@ export class WatchComponent implements OnInit {
   error = '';
   token = localStorage.getItem('token');
   userId: number | null = null;
-
-  tmdbToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YzYyOGQ3MmNiODAwMzNhOTAxNzgwNjdiMGU0MTk2OSIsIm5iZiI6MTczNzEwNTE1Ni40MzkwMDAxLCJzdWIiOiI2NzhhMWYwNDM4OTIwMzkzYWQxZDZmNWIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.tCeVDHw3sWQc8LkD1Yh308oexhQOXhtkNNd9i73e-y8';
+  tmdbToken = environment.tmdbToken;
 
   ngOnInit() {
     if (!this.token) return;

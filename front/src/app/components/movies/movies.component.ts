@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import axios from 'axios';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-movies',
@@ -16,7 +17,8 @@ export class MoviesComponent implements OnInit {
   filteredMovies: any[] = []
   allGenres: any[] = []
   selectedGenres: number[] = []
-  tmdbToken = 'TOKEN';
+  link = "https://api.themoviedb.org/3/movie/popular?language=fr&page=1";
+  tmdbToken = environment.tmdbToken;
 
   constructor(private router: Router) {}
 

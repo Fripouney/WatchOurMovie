@@ -2,16 +2,23 @@ FROM node:18
 
 WORKDIR /app
 
-# Installer les dépendances
-COPY package.json package-lock.json ./
-RUN npm install -g @angular/cli
-RUN npm install
+# Déclaration de l'argument TMDB_TOKEN attendu depuis docker-compose
+ARG TMDB_TOKEN
 
-# Copier le reste du code source de l'application
+# Copier les fichiers nécessaires d'abord
+COPY package.json package-lock.json ./
+
+# Installer les dépendances
+RUN npm install -g @angular/cli && npm install
+
+# Copier le reste du projet
 COPY . .
 
-# Exposer le port 4200 pour le serveur Angular
+# Injecter dynamiquement le token dans le fichier Angular d'environnement
+RUN sed -i "s|tmdbToken: ''|tmdbToken: '${TMDB_TOKEN}'|" ./src/environments/environment.ts
+
+# Exposer le port 4200 pour ng serve
 EXPOSE 4200
 
-# Lancer l'application
+# Démarrer le serveur Angular
 CMD ["ng", "serve", "--host", "0.0.0.0"]
